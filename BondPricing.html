@@ -1,393 +1,457 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BVBank Bond Pricing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: light-grey;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container-wrapper {
-            max-width: 1000px;
-            width: 90%;
-            background-color: #ffffff;
-            padding: 2.5rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            max-height: 95vh;
-        }
-        .input-group {
-            margin-bottom: 0.5rem;
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            color: #4b5563;
-            margin-bottom: 0.2rem;
-        }
-        input, select {
-            height: 40px;
-	    width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.75rem;
-            transition: border-color 0.2s;
-            outline: none;
-            text-align: center;
-        }
-        input:focus, select:focus {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-        }
-        .btn {
-            width: 100%;
-            padding: 1rem;
-            background-color: #123985;
-            color: #ffffff;
-            font-weight: 700;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: background-color 0.2s, box-shadow 0.2s;
-            margin-top: 50px;
-        }
-        .btn:hover {
-            background-color: #1B54C4;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-        }
-        .result {
-            margin-top: 1rem;
-            text-align: center;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1f2937;
-            padding: 1.5rem;
-            background-color: #e5e7eb;
-            border-radius: 1rem;
-        }
-        .result .final-price {
-            font-size: 1.5rem;
-            color: #123985;
-                        
-        }
-	.header {
-	    font-size: 2.5rem;
-	    color: #123985;
-	    text-align: center;
-	    font-weight: bold;
-	}
-        /* Style for the results table */
-        #resultTable {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-        #resultTable td {
-            padding: 0.75rem;
-            border-bottom: 1px solid #d1d5db;
-        }
-        #resultTable tr:last-child td {
-            border-bottom: none;
-        }
-		.logo{
-			width: 200px;
-		}
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .container-wrapper {
+        max-width: 1000px;
+        width: 90%;
+        background-color: rgb(21,21,21);
+        padding: 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px rgb(21, 21, 21);
+        overflow-y: auto;
+        max-height: 95vh;
+        border: 1px solid darkorange;
+      }
+      .input-group {
+        margin-bottom: 0.5rem;
+        color: black;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 0.2rem;
+      }
+      input,
+      select {
+        height: 40px;
+        width: 100%;
+        padding: 0.5rem;
+        color: black;
+        background-color: white;
+	
+        border: 1px solid white;
+        border-radius: 0.75rem;
+        transition: border-color 0.2s;
+        outline: none;
+        text-align: center;
+      }
+      input:focus,
+      select:focus {
+        border-color: darkorange;
+      }
+input:hover{
+border-color: darkorange;
+}
+      .btn {
+        width: 100%;
+        padding: 1rem;
+        color: white;
+        font-weight: 700;
+        border-radius: 0.75rem;
+        border: 1px solid darkorange;
+        cursor: pointer;
+        transition: background-color 0.2s, box-shadow 0.2s;
+        margin-top: 50px;
+      }
+      .btn:hover {
+        background-color: darkorange;
+        color: white;
+      }
+      .result {
+        margin-top: 1rem;
+        text-align: center;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        padding: 1.5rem;
+        background-color: #e5e7eb;
+        border-radius: 1rem;
+      }
+      .result .final-price {
+        font-size: 1.5rem;
+        color: #123985;
+      }
+      .header {
+        font-size: 2.5rem;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+      }
+      /* Style for the results table */
+      #resultTable {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+      #resultTable td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #d1d5db;
+      }
+      #resultTable tr:last-child td {
+        border-bottom: none;
+      }
+      img {
+        background-color: #fff;
+      }
+      .logo {
+        width: 5%;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        transform: translateX(-50%);
+        z-index: 1000; /* Đảm bảo hình ảnh nằm trên các phần tử khác */
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container-wrapper">
-	<img
+      <img
         class="logo"
         src="https://nguyenhuy2445.github.io/FXlive/NguyenHuy_Logo2.png"
         alt="logo"
       />
-        <h1 class="header">Bond Pricing</h1>
-        
-        <div class="flex flex-col md:flex-row-reverse gap-8">
-            <div class="w-full md:w-1/2">
-                <div class="input-section">
-                    <div class="input-group">
-                        <label for="issueDate">Issue date:</label>
-                        <input type="date" id="issueDate">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="termInYears">Tenor (year):</label>
-                        <select id="termInYears">
-                            <script>
-                                const termSelect = document.getElementById('termInYears');
-                                for (let i = 0; i <= 30; i++) {
-                                    const option = document.createElement('option');
-                                    option.value = i;
-                                    option.textContent = i;
-                                   
-                                    termSelect.appendChild(option);
-                                }
-                            </script>
-                        </select>
-                    </div>
+      <h1 class="header"><u>BVBank Bond Pricing</u></h1>
 
-                    <div class="input-group">
-                        <label for="maturityDate">Maturity date:</label>
-                        <input type="date" id="maturityDate">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="settlementDate">Revaluation date:</label>
-                        <input type="date" id="settlementDate">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="couponRate">Coupon (%):</label>
-                        <input type="number" id="couponRate" value="5" step="0.01">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="yieldRate">Yield (%):</label>
-                        <input type="number" id="yieldRate" value="6" step="0.01">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="freq">Frequency:</label>
-                        <select id="freq">
-                            <option value="1" selected>Annual</option>
-                            <option value="2">Semi-annual</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="basis">Daily basic:</label>
-                        <select id="basis">
-                            <option value="0">30/360</option>
-                            <option value="1">Actual/Actual (ISMA)</option>
-                            <option value="2" selected>Actual/360</option>
-                            <option value="3">Actual/365</option>
-                        </select>
-                    </div>
-                </div>
+      <div class="flex flex-col md:flex-row-reverse gap-8">
+        <div class="w-full md:w-1/2">
+          <div class="input-section">
+            <div class="input-group">
+              <label for="issueDate">Issue date:</label>
+              <input type="date" id="issueDate" />
             </div>
-            
-            <div class="w-full md:w-1/2">
-                <div class="result-section">
-                    <button id="calculateBtn" class="btn">Calculation </button>
-                    
-                    <div id="result" class="result hidden">
-                        <p class="final-price">Result</p>
-                        <table id="resultTable">
-                            <tbody>
-                                <tr>
-                                    <td class="text-left">Accrued Interest:</td>
-                                    <td class="text-right"><span id="accruedInterestValue"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-left">Dirty Price:</td>
-                                    <td class="text-right"><span id="dirtyPriceValue"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-left">Clean Price:</td>
-                                    <td class="text-right"><span id="cleanPriceValue"></span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+
+            <div class="input-group">
+              <label for="termInYears">Tenor (year):</label>
+              <select id="termInYears">
+                <script>
+                  const termSelect = document.getElementById("termInYears");
+                  for (let i = 0; i <= 30; i++) {
+                    const option = document.createElement("option");
+                    option.value = i;
+                    option.textContent = i;
+
+                    termSelect.appendChild(option);
+                  }
+                </script>
+              </select>
             </div>
+
+            <div class="input-group">
+              <label for="maturityDate">Maturity date:</label>
+              <input type="date" id="maturityDate" />
+            </div>
+
+            <div class="input-group">
+              <label for="settlementDate">Revaluation date:</label>
+              <input type="date" id="settlementDate" />
+            </div>
+
+            <div class="input-group">
+              <label for="couponRate">Coupon (%):</label>
+              <input type="number" id="couponRate" value="5" step="0.01" />
+            </div>
+
+            <div class="input-group">
+              <label for="yieldRate">Yield (%):</label>
+              <input type="number" id="yieldRate" value="6" step="0.01" />
+            </div>
+
+            <div class="input-group">
+              <label for="freq">Frequency:</label>
+              <select id="freq">
+                <option value="1" selected>Annual</option>
+                <option value="2">Semi-annual</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="basis">Daily basic:</label>
+              <select id="basis">
+                <option value="0">30/360</option>
+                <option value="1">Actual/Actual (ISMA)</option>
+                <option value="2" selected>Actual/360</option>
+                <option value="3">Actual/365</option>
+              </select>
+            </div>
+          </div>
         </div>
+
+        <div class="w-full md:w-1/2">
+          <div class="result-section">
+            <button id="calculateBtn" class="btn">Calculation</button>
+
+            <div id="result" class="result hidden">
+              <p class="final-price">Result</p>
+              <table id="resultTable">
+                <tbody>
+                  <tr>
+                    <td class="text-left">Accrued Interest:</td>
+                    <td class="text-right">
+                      <span id="accruedInterestValue"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-left">Dirty Price:</td>
+                    <td class="text-right">
+                      <span id="dirtyPriceValue"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-left">Clean Price:</td>
+                    <td class="text-right">
+                      <span id="cleanPriceValue"></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        // Event listener for the calculate button click
-        document.getElementById('calculateBtn').addEventListener('click', calculateBondPrice);
+      // Event listener for the calculate button click
+      document
+        .getElementById("calculateBtn")
+        .addEventListener("click", calculateBondPrice);
 
-        // Event listener for changes in the tenor input
-        document.getElementById('termInYears').addEventListener('change', updateMaturityDate);
-        
-        /**
-         * Sets the default value of the settlement date to today.
-         */
-        function setDefaultSettlementDate() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            document.getElementById('settlementDate').value = `${year}-${month}-${day}`;
+      // Event listener for changes in the tenor input
+      document
+        .getElementById("termInYears")
+        .addEventListener("change", updateMaturityDate);
+
+      /**
+       * Sets the default value of the settlement date to today.
+       */
+      function setDefaultSettlementDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        document.getElementById(
+          "settlementDate"
+        ).value = `${year}-${month}-${day}`;
+      }
+
+      /**
+       * Updates the maturity date based on the selected tenor.
+       */
+      function updateMaturityDate() {
+        const issueDateStr = document.getElementById("issueDate").value;
+        const termInYears = parseInt(
+          document.getElementById("termInYears").value
+        );
+
+        if (issueDateStr && !isNaN(termInYears)) {
+          const issueDate = new Date(issueDateStr);
+          const newMaturityDate = new Date(issueDate);
+          newMaturityDate.setFullYear(issueDate.getFullYear() + termInYears);
+
+          // Update the maturity date input value
+          document.getElementById("maturityDate").value = newMaturityDate
+            .toISOString()
+            .split("T")[0];
         }
-        
-        /**
-         * Updates the maturity date based on the selected tenor.
-         */
-        function updateMaturityDate() {
-            const issueDateStr = document.getElementById('issueDate').value;
-            const termInYears = parseInt(document.getElementById('termInYears').value);
-            
-            if (issueDateStr && !isNaN(termInYears)) {
-                const issueDate = new Date(issueDateStr);
-                const newMaturityDate = new Date(issueDate);
-                newMaturityDate.setFullYear(issueDate.getFullYear() + termInYears);
-                
-                // Update the maturity date input value
-                document.getElementById('maturityDate').value = newMaturityDate.toISOString().split('T')[0];
+      }
+
+      // Call the update functions once on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        updateMaturityDate();
+        setDefaultSettlementDate();
+      });
+
+      /**
+       * Main function to calculate the Clean Price of the bond.
+       */
+      function calculateBondPrice() {
+        try {
+          // Get values from input fields
+          const issueDateStr = document.getElementById("issueDate").value;
+          const maturityDateStr = document.getElementById("maturityDate").value;
+          const settlementDateStr =
+            document.getElementById("settlementDate").value;
+          const couponRate =
+            parseFloat(document.getElementById("couponRate").value) / 100;
+          const yieldRate =
+            parseFloat(document.getElementById("yieldRate").value) / 100;
+          const freq = parseInt(document.getElementById("freq").value);
+          const basis = parseInt(document.getElementById("basis").value);
+
+          // Convert date strings to Date objects
+          const issueDate = new Date(issueDateStr);
+          const maturityDate = new Date(maturityDateStr);
+          const settlementDate = new Date(settlementDateStr);
+
+          // Check if settlement date is valid
+          if (settlementDate >= maturityDate) {
+            throw new Error("Revaluation date must be before maturity date.");
+          }
+
+          // Assumed parameters
+          const faceValue = 100000;
+
+          // Step 1: Calculate Accrued Interest
+          const lastCouponDate = findLastCouponDate(
+            issueDate,
+            settlementDate,
+            freq
+          );
+          const daysSinceLastCoupon = calculateDays(
+            lastCouponDate,
+            settlementDate,
+            basis
+          );
+          const nextCouponDate = getNextCouponDate(lastCouponDate, freq);
+          const daysInCurrentPeriod = calculateDays(
+            lastCouponDate,
+            nextCouponDate,
+            basis
+          );
+          const accruedInterest =
+            (daysSinceLastCoupon / daysInCurrentPeriod) *
+            ((couponRate * faceValue) / freq);
+
+          // Step 2: Calculate Dirty Price
+          let dirtyPrice = 0;
+          let firstCouponDate = getNextCouponDate(lastCouponDate, freq);
+          if (firstCouponDate <= settlementDate) {
+            firstCouponDate = getNextCouponDate(firstCouponDate, freq);
+          }
+
+          const daysToFirstPayment = calculateDays(
+            settlementDate,
+            firstCouponDate,
+            basis
+          );
+          const daysInFirstPeriod = calculateDays(
+            lastCouponDate,
+            firstCouponDate,
+            basis
+          );
+
+          let remainingPeriods = 0;
+          let tempDate = new Date(firstCouponDate);
+          while (tempDate <= maturityDate) {
+            remainingPeriods++;
+            tempDate = getNextCouponDate(tempDate, freq);
+          }
+
+          for (let i = 1; i <= remainingPeriods; i++) {
+            const couponPayment = (couponRate * faceValue) / freq;
+
+            let exponent = 0;
+            if (i === 1) {
+              exponent = daysToFirstPayment / daysInFirstPeriod;
+            } else {
+              exponent = i - 1 + daysToFirstPayment / daysInFirstPeriod;
             }
-        }
 
-        // Call the update functions once on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            updateMaturityDate();
-            setDefaultSettlementDate();
-        });
+            const discountFactor = Math.pow(1 + yieldRate / freq, exponent);
 
-        /**
-         * Main function to calculate the Clean Price of the bond.
-         */
-        function calculateBondPrice() {
-            try {
-                // Get values from input fields
-                const issueDateStr = document.getElementById('issueDate').value;
-                const maturityDateStr = document.getElementById('maturityDate').value;
-                const settlementDateStr = document.getElementById('settlementDate').value;
-                const couponRate = parseFloat(document.getElementById('couponRate').value) / 100;
-                const yieldRate = parseFloat(document.getElementById('yieldRate').value) / 100;
-                const freq = parseInt(document.getElementById('freq').value);
-                const basis = parseInt(document.getElementById('basis').value);
-
-                // Convert date strings to Date objects
-                const issueDate = new Date(issueDateStr);
-                const maturityDate = new Date(maturityDateStr);
-                const settlementDate = new Date(settlementDateStr);
-
-                // Check if settlement date is valid
-                if (settlementDate >= maturityDate) {
-                    throw new Error("Revaluation date must be before maturity date.");
-                }
-
-                // Assumed parameters
-                const faceValue = 100000;
-                
-                // Step 1: Calculate Accrued Interest
-                const lastCouponDate = findLastCouponDate(issueDate, settlementDate, freq);
-                const daysSinceLastCoupon = calculateDays(lastCouponDate, settlementDate, basis);
-                const nextCouponDate = getNextCouponDate(lastCouponDate, freq);
-                const daysInCurrentPeriod = calculateDays(lastCouponDate, nextCouponDate, basis);
-                const accruedInterest = (daysSinceLastCoupon / daysInCurrentPeriod) * ((couponRate * faceValue) / freq);
-                
-                // Step 2: Calculate Dirty Price
-                let dirtyPrice = 0;
-                let firstCouponDate = getNextCouponDate(lastCouponDate, freq);
-                if (firstCouponDate <= settlementDate) {
-                     firstCouponDate = getNextCouponDate(firstCouponDate, freq);
-                }
-
-                const daysToFirstPayment = calculateDays(settlementDate, firstCouponDate, basis);
-                const daysInFirstPeriod = calculateDays(lastCouponDate, firstCouponDate, basis);
-                
-                let remainingPeriods = 0;
-                let tempDate = new Date(firstCouponDate);
-                while(tempDate <= maturityDate) {
-                    remainingPeriods++;
-                    tempDate = getNextCouponDate(tempDate, freq);
-                }
-
-                for (let i = 1; i <= remainingPeriods; i++) {
-                    const couponPayment = (couponRate * faceValue) / freq;
-                    
-                    let exponent = 0;
-                    if (i === 1) {
-                        exponent = daysToFirstPayment / daysInFirstPeriod;
-                    } else {
-                        exponent = (i - 1) + (daysToFirstPayment / daysInFirstPeriod);
-                    }
-
-                    const discountFactor = Math.pow((1 + (yieldRate / freq)), exponent);
-                    
-                    let payment = couponPayment;
-                    if (i === remainingPeriods) {
-                        payment += faceValue;
-                    }
-                    dirtyPrice += payment / discountFactor;
-                }
-                
-                // Step 3: Calculate Clean Price
-                const cleanPrice = dirtyPrice - accruedInterest;
-
-                // Format numbers with thousands separator
-                const formatNumber = (num) => {
-                    return Math.round(num).toLocaleString('en-US');
-                };
-
-                // Display the results
-                document.getElementById('accruedInterestValue').textContent = formatNumber(accruedInterest);
-                document.getElementById('dirtyPriceValue').textContent = formatNumber(dirtyPrice);
-                document.getElementById('cleanPriceValue').textContent = formatNumber(cleanPrice);
-                document.getElementById('result').classList.remove('hidden');
-
-            } catch (e) {
-                // Handle errors and display a message
-                document.getElementById('cleanPriceValue').textContent = e.message;
-                document.getElementById('result').classList.remove('hidden');
+            let payment = couponPayment;
+            if (i === remainingPeriods) {
+              payment += faceValue;
             }
-        }
-        
-        /**
-         * Finds the last coupon date before or on the settlement date.
-         */
-        function findLastCouponDate(issueDate, settlementDate, freq) {
-            let lastCouponDate = new Date(issueDate);
-            let nextCouponDate = new Date(issueDate);
-            while (nextCouponDate <= settlementDate) {
-                lastCouponDate = new Date(nextCouponDate);
-                nextCouponDate.setMonth(nextCouponDate.getMonth() + (12 / freq));
-            }
-            return lastCouponDate;
-        }
+            dirtyPrice += payment / discountFactor;
+          }
 
-        /**
-         * Finds the next coupon date.
-         */
-        function getNextCouponDate(date, freq) {
-            const nextDate = new Date(date);
-            nextDate.setMonth(nextDate.getMonth() + (12 / freq));
-            return nextDate;
+          // Step 3: Calculate Clean Price
+          const cleanPrice = dirtyPrice - accruedInterest;
+
+          // Format numbers with thousands separator
+          const formatNumber = (num) => {
+            return Math.round(num).toLocaleString("en-US");
+          };
+
+          // Display the results
+          document.getElementById("accruedInterestValue").textContent =
+            formatNumber(accruedInterest);
+          document.getElementById("dirtyPriceValue").textContent =
+            formatNumber(dirtyPrice);
+          document.getElementById("cleanPriceValue").textContent =
+            formatNumber(cleanPrice);
+          document.getElementById("result").classList.remove("hidden");
+        } catch (e) {
+          // Handle errors and display a message
+          document.getElementById("cleanPriceValue").textContent = e.message;
+          document.getElementById("result").classList.remove("hidden");
         }
+      }
 
-        /**
-         * Calculates the number of days between two dates based on the specified basis.
-         */
-        function calculateDays(d1, d2, basis) {
-            const oneDay = 24 * 60 * 60 * 1000;
-            if (basis === 0) { // 30/360
-                let y1 = d1.getFullYear(),
-                    m1 = d1.getMonth() + 1,
-                    day1 = d1.getDate();
-                let y2 = d2.getFullYear(),
-                    m2 = d2.getMonth() + 1,
-                    day2 = d2.getDate();
-
-                if (day1 === 31) day1 = 30;
-                if (day2 === 31 && day1 === 30) day2 = 30;
-                
-                return 360 * (y2 - y1) + 30 * (m2 - m1) + (day2 - day1);
-
-            } else if (basis === 2) { // Actual/360
-                return Math.round(Math.abs((d2.getTime() - d1.getTime()) / oneDay));
-            } else if (basis === 3) { // Actual/365
-                return Math.round(Math.abs((d2.getTime() - d1.getTime()) / oneDay));
-            }
-            // Default to 30/360
-            let y1 = d1.getFullYear(), m1 = d1.getMonth() + 1, day1 = d1.getDate();
-            let y2 = d2.getFullYear(), m2 = d2.getMonth() + 1, day2 = d2.getDate();
-            if (day1 === 31) day1 = 30;
-            if (day2 === 31 && day1 === 30) day2 = 30;
-            return 360 * (y2 - y1) + 30 * (m2 - m1) + (day2 - day1);
+      /**
+       * Finds the last coupon date before or on the settlement date.
+       */
+      function findLastCouponDate(issueDate, settlementDate, freq) {
+        let lastCouponDate = new Date(issueDate);
+        let nextCouponDate = new Date(issueDate);
+        while (nextCouponDate <= settlementDate) {
+          lastCouponDate = new Date(nextCouponDate);
+          nextCouponDate.setMonth(nextCouponDate.getMonth() + 12 / freq);
         }
+        return lastCouponDate;
+      }
+
+      /**
+       * Finds the next coupon date.
+       */
+      function getNextCouponDate(date, freq) {
+        const nextDate = new Date(date);
+        nextDate.setMonth(nextDate.getMonth() + 12 / freq);
+        return nextDate;
+      }
+
+      /**
+       * Calculates the number of days between two dates based on the specified basis.
+       */
+      function calculateDays(d1, d2, basis) {
+        const oneDay = 24 * 60 * 60 * 1000;
+        if (basis === 0) {
+          // 30/360
+          let y1 = d1.getFullYear(),
+            m1 = d1.getMonth() + 1,
+            day1 = d1.getDate();
+          let y2 = d2.getFullYear(),
+            m2 = d2.getMonth() + 1,
+            day2 = d2.getDate();
+
+          if (day1 === 31) day1 = 30;
+          if (day2 === 31 && day1 === 30) day2 = 30;
+
+          return 360 * (y2 - y1) + 30 * (m2 - m1) + (day2 - day1);
+        } else if (basis === 2) {
+          // Actual/360
+          return Math.round(Math.abs((d2.getTime() - d1.getTime()) / oneDay));
+        } else if (basis === 3) {
+          // Actual/365
+          return Math.round(Math.abs((d2.getTime() - d1.getTime()) / oneDay));
+        }
+        // Default to 30/360
+        let y1 = d1.getFullYear(),
+          m1 = d1.getMonth() + 1,
+          day1 = d1.getDate();
+        let y2 = d2.getFullYear(),
+          m2 = d2.getMonth() + 1,
+          day2 = d2.getDate();
+        if (day1 === 31) day1 = 30;
+        if (day2 === 31 && day1 === 30) day2 = 30;
+        return 360 * (y2 - y1) + 30 * (m2 - m1) + (day2 - day1);
+      }
     </script>
-</body>
-
+  </body>
 </html>
