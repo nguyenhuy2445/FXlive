@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to Feb 17, 2026</title>
+    <style>
+        /* CSS để giao diện trông hiện đại hơn */
+        body {
+            background-image: url("789.jpg");
+	    background-position: center;
+            background-color: black;
+            background-repeat: no-repeat;
+    	    background-size: cover;
+   	    background-attachment: fixed;
+	    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            align-items: bottom;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            height: 200px;
+	    width: 700px;
+            padding: 2rem;
+            border-radius: 10px;
+            baackdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+	
+        }
+
+        h1 { margin-bottom: 2rem; font-weight: bold; letter-spacing: 2px; }
+
+        .countdown { display: flex; gap: 20px; justify-content: center; }
+
+        .time-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .number { display: block; font-size: 2.5rem; font-weight: bold; }
+        .label { font-size: 0.8rem; text-transform: uppercase; opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>NEW YEAR'S HOLIDAY COUNTDOWN</h1>
+        <div class="countdown">
+            <div class="time-box">
+                <span class="number" id="days">00</span>
+                <span class="label">DAY</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="hours">00</span>
+                <span class="label">HOUR</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="minutes">00</span>
+                <span class="label">MIN</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="seconds">00</span>
+                <span class="label">SEC</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Thiết lập ngày kết thúc
+        const targetDate = new Date("Feb 13, 2026 17:30:00").getTime();
+
+        const updateCountdown = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // Tính toán thời gian
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Hiển thị kết quả
+            document.getElementById("days").innerText = d.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = h.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = s.toString().padStart(2, '0');
+
+            // Nếu đếm ngược kết thúc
+            if (distance < 0) {
+                clearInterval(updateCountdown);
+                document.querySelector(".countdown").innerHTML = "<h2>ĐÃ ĐẾN HẠN!</h2>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
