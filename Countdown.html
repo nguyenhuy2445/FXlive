@@ -18,9 +18,10 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            align-items: bottom;
+            align-items: auto;
             color: white;
             text-align: center;
+flex-direction: column;
         }
 
         .container {
@@ -31,6 +32,7 @@
             baackdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
+		 margin: 0 auto;
 	
         }
 
@@ -47,6 +49,7 @@
 
         .number { display: block; font-size: 2.5rem; font-weight: bold; }
         .label { font-size: 0.8rem; text-transform: uppercase; opacity: 0.8; }
+        .tape { margin-top: auto; }
     </style>
 </head>
 <body>
@@ -100,5 +103,10 @@
             }
         }, 1000);
     </script>
+ <div class="tape">
+<script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
+
+<tv-ticker-tape symbols='FX:EURUSD,FX:AUDUSD,CAPITALCOM:DXY,CFI:WTI,FOREXCOM:XAGUSD,FOREXCOM:XAUUSD,FOREXCOM:USDJPY,FOREXCOM:USDCAD,FX:GBPUSD,COINBASE:BTCUSD' hide-chart theme="dark"></tv-ticker-tape>
+</div>
 </body>
 </html>
