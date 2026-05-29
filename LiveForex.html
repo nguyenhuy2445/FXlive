@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trading Dashboard with Symbol Selector</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background-color: #131722;
+        color: #ffffff;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Top Control Bar */
+      .control-bar {
+        background-color: #1c2030;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #2a2e39;
+        height: 55px;
+        z-index: 10;
+      }
+
+      .control-bar label {
+        font-size: 14px;
+        color: #b2b5be;
+      }
+
+      /* Dropdown styling */
+      .control-bar select {
+        background-color: #2a2e39;
+        border: 1px solid #434651;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        cursor: pointer;
+        min-width: 200px;
+      }
+
+      .control-bar select:focus {
+        border-color: #2962ff;
+      }
+
+      .control-bar button {
+        background-color: #2962ff;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.2s;
+      }
+
+      .control-bar button:hover {
+        background-color: #1e4bd8;
+      }
+
+      /* 3-Column Main Layout */
+      .dashboard-container {
+        display: flex;
+        flex: 1;
+        padding: 0;
+        gap: 0;
+        height: calc(100vh - 55px);
+        user-select: none;
+      }
+
+      .column {
+        background-color: #1c2030;
+        border-radius: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+
+      /* Initial widths for columns */
+      .calendar-column {
+        width: 350px;
+        min-width: 250px;
+        max-width: 600px;
+      }
+
+      /* Watchlist Column - Pulled left slightly to counter internal iframe spacing */
+      .watchlist-column {
+        width: 320px;
+        min-width: 200px;
+        max-width: 500px;
+        margin-left: -1px; /* Overlap borders slightly to ensure zero gap gap */
+      }
+
+      .chart-column {
+        flex: 1;
+        min-width: 400px;
+      }
+
+      /* Resizer Drag Bar Element */
+      .resizer {
+        width: 4px;
+        cursor: col-resize;
+        background-color: #2a2e39;
+        position: relative;
+        z-index: 5;
+        transition: background-color 0.2s;
+      }
+
+      .resizer:hover,
+      .resizer.dragging {
+        background-color: #2962ff;
+      }
+
+      /* Prevents iframes from capturing mouse events during drag actions */
+      .dragging-active iframe {
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="control-bar">
+      <label for="symbolSelect">Choose a Symbol:</label>
+      <select id="symbolSelect">
+        <optgroup label="Stocks (US)">
+          <option value="NASDAQ:AAPL">Apple (AAPL)</option>
+          <option value="NASDAQ:MSFT">Microsoft (MSFT)</option>
+          <option value="NASDAQ:TSLA">Tesla (TSLA)</option>
+          <option value="NASDAQ:NVDA">NVIDIA (NVDA)</option>
+          <option value="NASDAQ:AMZN">Amazon (AMZN)</option>
+          <option value="NYSE:NIO">NIO Inc. (NIO)</option>
+        </optgroup>
+        <optgroup label="Cryptocurrency">
+          <option value="BINANCE:BTCUSDT">Bitcoin (BTC/USDT)</option>
+          <option value="BINANCE:ETHUSDT">Ethereum (ETH/USDT)</option>
+          <option value="BINANCE:SOLUSDT">Solana (SOL/USDT)</option>
+          <option value="BINANCE:XRPUSDT">Ripple (XRP/USDT)</option>
+        </optgroup>
+        <optgroup label="Forex & Commodities">
+          <option value="FX:EURUSD">EUR / USD</option>
+          <option value="FX:GBPUSD">GBP / USD</option>
+          <option value="OANDA:XAUUSD">Gold (XAU/USD)</option>
+          <option value="TVC:USOIL">Crude Oil (WTI)</option>
+        </optgroup>
+      </select>
+      <button onclick="addSelectedSymbol()">Add to Watchlist</button>
+    </div>
+
+    <div class="dashboard-container" id="dashboard">
+      <div class="column calendar-column" id="calendarCol">
+        <iframe
+          id="calendar_frame"
+          style="width: 100%; height: 100%; border: none; background: #1c2030"
+        ></iframe>
+      </div>
+
+      <div class="resizer" id="leftResizer"></div>
+
+      <div class="xwatchlist-column" id="watchlistCol">
+        <div id="watchlist_target" style="height: 100%; width: 0%"></div>
+      </div>
+
+      <div class="resizer" id="rightResizer"></div>
+
+      <div class="column chart-column">
+        <div id="chart_target" style="height: 100%; width: 100%"></div>
+      </div>
+    </div>
+
+    <script
+      type="text/javascript"
+      src="https://s3.tradingview.com/tv.js"
+    ></script>
+
+    <script type="text/javascript">
+      // 1. Core Starting Watchlist Array
+      let myWatchlist = [
+        "BINANCE:BTCUSDT",
+        "CAPITALCOM:DXY",
+        "FX:EURUSD",
+        "FX:GBPUSD",
+        "FX:AUDUSD",
+        "FX:USDJPY",
+        "FX:USDCAD",
+        "TVC:USOIL",
+        "OANDA:XAUUSD",
+      ];
+
+      // 2. Safe Injection for Economic Calendar via Iframe Document Write
+      function loadEconomicCalendar() {
+        const iframe = document.getElementById("calendar_frame");
+        const widgetHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #1c2030; }
+                    </style>
+                </head>
+                <body>
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                        {
+                            "colorTheme": "dark",
+                            "isWidescreen": false,
+                            "width": "100%",
+                            "height": "100%",
+                            "locale": "en",
+                            "importanceFilter": "-1,0,1",
+                            "currencyFilter": "USD,EUR,GBP,JPY,AUD,CAD,CHF"
+                        }
+                        <\/script>
+                    </div>
+                </body>
+                </html>
+            `;
+        iframe.srcdoc = widgetHtml;
+      }
+
+      // 3. Main Render Engine for Charting/Watchlist
+      function loadTradingViewDashboard(defaultSymbol) {
+        document.getElementById("watchlist_target").innerHTML =
+          '<div id="tradingview_watchlist" style="height:100%;"></div>';
+        document.getElementById("chart_target").innerHTML =
+          '<div id="tradingview_chart" style="height:100%;"></div>';
+
+        new TradingView.widget({
+          autosize: true,
+          symbol: defaultSymbol,
+          interval: "D",
+          timezone: "Etc/UTC",
+          theme: "dark",
+          style: "1",
+          locale: "en",
+          enable_publishing: false,
+          hide_side_toolbar: true /* Crucial: removes internal margins built into widget */,
+          allow_symbol_change: true,
+          container_id: "tradingview_chart",
+          watchlist_container_id: "tradingview_watchlist",
+          watchlist: myWatchlist,
+        });
+      }
+
+      // 4. Dropdown Action Controller
+      function addSelectedSymbol() {
+        const dropdown = document.getElementById("symbolSelect");
+        const selectedValue = dropdown.value;
+
+        if (myWatchlist.includes(selectedValue)) {
+          alert("This asset is already present in your active watchlist.");
+          return;
+        }
+
+        myWatchlist.push(selectedValue);
+        loadTradingViewDashboard(selectedValue);
+      }
+
+      // 5. Drag-to-Resize Implementation
+      function setupResizers() {
+        const dashboard = document.getElementById("dashboard");
+        const leftResizer = document.getElementById("leftResizer");
+        const rightResizer = document.getElementById("rightResizer");
+        const calendarCol = document.getElementById("calendarCol");
+        const watchlistCol = document.getElementById("xwatchlistCol");
+
+        let activeResizer = null;
+        let startX = 0;
+        let startWidth = 0;
+
+        function onMouseDown(e, resizerType, columnEl) {
+          activeResizer = resizerType;
+          startX = e.clientX;
+          startWidth = columnEl.getBoundingClientRect().width;
+
+          dashboard.classList.add("dragging-active");
+          if (resizerType === "left") leftResizer.classList.add("dragging");
+          if (resizerType === "right") rightResizer.classList.add("dragging");
+
+          document.addEventListener("mousemove", onMouseMove);
+          document.addEventListener("mouseup", onMouseUp);
+        }
+
+        function onMouseMove(e) {
+          if (!activeResizer) return;
+
+          const deltaX = e.clientX - startX;
+          if (activeResizer === "left") {
+            const newWidth = Math.max(250, Math.min(600, startWidth + deltaX));
+            calendarCol.style.width = `${newWidth}px`;
+          } else if (activeResizer === "right") {
+            const newWidth = Math.max(200, Math.min(500, startWidth + deltaX));
+            watchlistCol.style.width = `${newWidth}px`;
+          }
+        }
+
+        function onMouseUp() {
+          activeResizer = null;
+          dashboard.classList.remove("dragging-active");
+          leftResizer.classList.remove("dragging");
+          rightResizer.classList.remove("dragging");
+
+          document.removeEventListener("mousemove", onMouseMove);
+          document.removeEventListener("mouseup", onMouseUp);
+
+          window.dispatchEvent(new Event("resize"));
+        }
+
+        leftResizer.addEventListener("mousedown", (e) =>
+          onMouseDown(e, "left", calendarCol)
+        );
+        rightResizer.addEventListener("mousedown", (e) =>
+          onMouseDown(e, "right", watchlistCol)
+        );
+      }
+
+      // Initialize App
+      loadEconomicCalendar();
+      loadTradingViewDashboard("NASDAQ:AAPL");
+      setupResizers();
+    </script>
+  </body>
+</html>
