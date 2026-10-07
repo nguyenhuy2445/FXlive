@@ -1,274 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BVBank FX Live Quotes</title>
     <style>
-      .symbol {
-        margin: auto;
-        width: 350px;
-        height: 110px;
-        align-content: center;
-        /*border: 0.1px solid rgb(59, 59, 59);*/
-        border-radius: 2px;
-       
-      }
-      .container {
-        /* margin: 0 auto;*/
+      /* Thiết lập nền toàn trang */
+      body {
         margin: 0;
-        height: 100%;
-        /*background-color: black;*/
-        /* border: 0.1px solid rgb(59, 59, 59); */
-      }
-      .body {
+        padding: 0;
         background-color: black;
-        /*background-image: url("456.png");*/
-        background-position: center; 
-        background-repeat: no-repeat; 
-        background-size: cover; 
-        background-attachment: fixed;
-        
+        font-family: Arial, sans-serif;
+      }
+
+      /* Container bao quanh tất cả các widget */
+      .main-wrapper {
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
+        min-height: 100vh;
+        padding: 10px;
+      }
+
+      tv-tickers {
+        display: block;
+        min-width: 0;
+        align-self: center;
       }
     </style>
   </head>
-  <body style="display: block" class="body">
-    <div class="container" style="display: flex">
-      <!-- TradingView Widget BEGIN -->
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "FX:EURUSD",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "FX:AUDUSD",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "FX:GBPUSD",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-    </div>
-    <div class="container" style="display: flex">
-      <!-- TradingView Widget BEGIN -->
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "FX:USDJPY",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "FX:USDCAD",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "OANDA:XAGUSD",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-    </div>
-    <!-- <div class="container" style="display: flex"> -->
-      <!-- TradingView Widget BEGIN
-      <div class = "symbol">
-        <div ><a href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX" rel="noopener nofollow" target="_blank"></a></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-          {
-          "symbol": "FX:NZDUSD",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"          
-          }
-        </script>
-      </div>
-      <div class = "symbol">
-        <div ><a href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX" rel="noopener nofollow" target="_blank"></a></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-          {
-          "symbol": "FRED:FEDFUNDS",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-      <div class = "symbol">
-        <div ><a href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX" rel="noopener nofollow" target="_blank"></a></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-        {
-        "symbol": "FX_IDC:USDVND",
-        "colorTheme": "dark",
-        "isTransparent": true,
-        "locale": "en"
-        }
-        </script>
-      </div>
-    </div> -->
-    <div class="container" style="display: flex">
-      <!-- TradingView Widget BEGIN -->
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "SKILLING:BRENT",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "CAPITALCOM:DXY",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-      <div class="symbol">
-        <div>
-          <a
-            href="https://www.tradingview.com/symbols/FX-EURUSD/?exchange=FX"
-            rel="noopener nofollow"
-            target="_blank"
-          ></a>
-        </div>
-        <script
-          type="text/javascript"
-          src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
-          async
-        >
-          {
-          "symbol": "OANDA:XAUUSD",
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "locale": "en"
-          }
-        </script>
-      </div>
-    </div>
+  <body>
+    <div class="main-wrapper">
+      <script
+        type="module"
+        src="https://widgets.tradingview-widget.com/w/en/tv-tickers.js"
+      ></script>
 
-      <!-- TradingView Widget END -->
+      <tv-tickers
+        symbols="FX:EURUSD, FX:AUDUSD, FX:GBPUSD"
+        hide-chart
+        theme="dark"
+        transparent
+        direction="vertical"
+      ></tv-tickers>
+      <tv-tickers
+        symbols="FX:USDJPY, FX:USDCAD, CAPITALCOM:DXY"
+        hide-chart
+        theme="dark"
+        transparent
+        direction="vertical"
+      ></tv-tickers>
+      <tv-tickers
+        symbols="OANDA:XAGUSD, OANDA:XAUUSD, SKILLING:BRENT"
+        hide-chart
+        theme="dark"
+        transparent
+        direction="vertical"
+      ></tv-tickers>
     </div>
   </body>
 </html>
