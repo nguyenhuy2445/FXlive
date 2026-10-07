@@ -11,13 +11,14 @@
         padding: 0;
         background-color: black;
         font-family: Arial, sans-serif;
+        zoom: 3.7;
       }
 
       /* Container bao quanh tất cả các widget */
       .main-wrapper {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 5px;
 
         padding: 10px;
@@ -26,7 +27,7 @@
       tv-tickers {
         display: block;
         min-width: 0;
-        height: 370px;
+        height: 340px;
         align-self: center;
       }
 
@@ -51,27 +52,33 @@
       ></script>
 
       <tv-tickers
-        symbols="FX:EURUSD, FX:AUDUSD, FX:GBPUSD"
+        symbols="FX:EURUSD, FX:AUDUSD"
         hide-chart
         theme="dark"
         transparent
         direction="vertical"
       ></tv-tickers>
       <tv-tickers
-        symbols="FX:USDJPY, FX:USDCAD, CAPITALCOM:DXY"
+        symbols="FX:USDJPY, FX:USDCAD"
         hide-chart
         theme="dark"
         transparent
         direction="vertical"
       ></tv-tickers>
       <tv-tickers
-        symbols="OANDA:XAGUSD, OANDA:XAUUSD, SKILLING:BRENT"
+        symbols="FX:GBPUSD, , CAPITALCOM:DXY"
+        hide-chart
+        theme="dark"
+        transparent
+        direction="vertical"
+      ></tv-tickers>
+      <tv-tickers
+        symbols=" OANDA:XAUUSD, SKILLING:BRENT"
         hide-chart
         theme="dark"
         transparent
         direction="vertical"
       ></tv-tickers>
     </div>
-  
   </body>
 </html>
